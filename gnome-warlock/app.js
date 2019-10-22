@@ -1,97 +1,95 @@
 $(() => {
-    // const player = class {
 
-
-
-
-    // }
-
-
-    // let side = 5;
-    // console.log(`side: ${side}`);
-    // let startTile = Math.ceil(side/2);
-    // console.log(`origin: ${startTile}`);
-
-    const $container = $('#container');
-    // for(let i = 1; i <= side; i++) {
-    //     for(let j = 1; j <= side; j++) {
-    //         $tile = $('<div>').addClass('tile');
-    //         $tile.addClass(`row-${i}`);
-    //         $tile.addClass(`column-${j}`);
-    //         $tile.appendTo($container);
-    //     }
-    // }
-
-    // $gnome = $('<div>').attr('id','gnome');
-    // $(`.row-${startTile}.column-${startTile}`).replaceWith($gnome);
-
-
-
-    let side = 5;
-    console.log(`side: ${side}`);
-
-    let startTile = Math.floor(side/2);
-    console.log(`startTile: ${startTile}`);
-
-    let dungeon = [];
-    for(let row = 0; row < side; row++) {
-        dungeon.push([]);
-        for(let column = 0; column < side; column++) {
-            dungeon[row].push('_')
-            // dungeon[row].push(`${row},${column}`)
+    //actors
+    const gnome = {
+        name: 'gnome',
+        position: {
+            current: [0,0],
+            previous: [0,0],
+            north: [0,0],
+            east: [0,0],
+            south: [0,0],
+            west: [0,0]
+        },
+        getCurrentPosition: () => {
+            console.log(`gnome position: ${gnome.position.current}`);
         }
     }
 
-    // console.log(dungeon)
+    const $container = $('#container'); //jquery object of game container
+    const $gnome = $('<div>').attr('id','gnome');   //jquery object of gnome
+    const $tile = $('<div>').addClass('tile');
+    let side = 5;   //size of side of dungeon
+    let startTile = Math.floor(side / 2); //where the gnome will start
 
-    let gnome = 'G';
-    console.log(`gnome: ${gnome}`);
+    //updates position coordinates of gnome or enemy based on current position
+    const updatePosition = (actor) => {
+        console.log(`updating position of ${actor.name}`);
 
-    let gnomeRow = startTile;
-    let gnomeColumn = startTile;
-    console.log(`gnome location: ${gnomeRow},${gnomeColumn}`);
+        const pos = actor.position.current;
+        actor.position.north = [pos[0] - 1, pos[1]];
+        actor.position.east  = [pos[0], pos[1] + 1];
+        actor.position.south = [pos[0] + 1, pos[1]];
+        actor.position.west  = [pos[0], pos[1] - 1];
+    }
 
-    dungeon[gnomeRow][gnomeColumn] = gnome;
+    const moveGnome = (event) => {
+        console.log('moving gnome');
 
-    // console.log(dungeon);
+        const clickID = $(event.currentTarget).attr('id');
+        console.log(`clickID: ${clickID}`);
 
-    for(let i = 0; i < 3; i++) {
+        updatePosition(gnome);
 
-        let move = prompt('move');
-        console.log(`move: ${move}`)
-
-        let gnomeRowPrevious = gnomeRow
-        let gnomeColumnPrevious = gnomeColumn
-
-        if(move === 'n') {
-            gnomeRow--;
-        } else if(move === 'e') {
-            gnomeColumn++;
-        } else if(move === 's') {
-            gnomeRow++;
-        } else if(move === 'w') {
-            gnomeColumn--;
+        if(clickID === gnome.position.north.join('-')) {
+            gnome.position.current[0]--;
+        } else if(clickID === gnome.position.east.join('-')) {
+            gnome.position.current[1]++;
+        } else if(clickID === gnome.position.south.join('-')) {
+            gnome.position.current[0]++;
+        } else if(clickID === gnome.position.west.join('-')) {
+            gnome.position.current[1]--;
         } else {
-            console.log('bad input');
+            console.log(`gnome can't move here`);
         }
 
-        dungeon[gnomeRow][gnomeColumn] = gnome;
+        updatePosition(gnome);
+        console.log(gnome.position);
 
-        dungeon[gnomeRowPrevious][gnomeColumnPrevious] = 'p'
+        const $newTile = $tile.clone();
+        console.log((`#${gnome.position.previous[0]}-${gnome.position.previous[1]}`))
 
-        console.log(`gnome location: ${gnomeRow},${gnomeColumn}`);
+        // $(`#${gnome.position.previous[0]}-${gnome.position.previous[1]}`).replaceWith($newTile);
+        // $(`#${gnome.position.current[0]}-${gnome.position.current[1]}`).replaceWith($gnome);
 
-        console.log(dungeon);
 
-        for(let x = 0; x < side; x++) {
-            for(let y = 0; y < side; y++) {
-                const $tile = $('<div>').attr('id',`${x},${y}`)
-                $tile.text(`row${x},column${y}`);
-                $tile.addClass('tile');
-                $container.append($tile);
+
+        gnome.getCurrentPosition();
+    }
+
+    //generates dungeon and sets gnome to center
+    const generateDungeon = () => {
+        
+        console.log('generating dungeon');
+        console.log(`side: ${side}`);
+        console.log(`startTile: ${startTile}`);
+
+        for(let row = 0; row < side; row++) {
+            for(let column = 0; column < side; column++) {
+                const $newTile = $tile.clone();
+                $newTile.text(`row${row},column${column}`);
+                $newTile.attr('id',`${row}-${column}`);
+                $newTile.on('click', moveGnome);
+                $container.append($newTile);
             }
         }
 
+        gnome.position.current = [startTile, startTile];
+        const $replace = $(`#${gnome.position.current[0]}-${gnome.position.current[1]}`);
+        $replace.replaceWith($gnome);
+
+        gnome.getCurrentPosition();
     }
-    console.log('end');
+
+    generateDungeon();
 });
