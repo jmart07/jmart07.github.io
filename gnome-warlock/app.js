@@ -1,27 +1,36 @@
 $(() => {
-
-    //actors
-    const gnome = {
-        name: 'gnome',
-        position: {
-            current: [0,0],
-            previous: [0,0],
-            north: [0,0],
-            east: [0,0],
-            south: [0,0],
-            west: [0,0]
-        },
-        getCurrentPosition: () => {
-            console.log(`gnome position: ${gnome.position.current}`);
+    //// ACTORS ////
+    //class for creating gnome (player) and enemies
+    class Character {
+        constructor(name, current) {
+            this.name = name;
+            this.position = {
+                current: current,
+                previous: [0,0],
+                north: [0,0],
+                east: [0,0],
+                south: [0,0],
+                west: [0,0]
+            }
+        }
+        getCurrentPosition () {
+            console.log(`getting current postion`);
+            console.log(`${this.name}'s position: ${this.position.current.join('-')}`);
+            return `${this.position.current.join('-')}`;
         }
     }
 
     const $container = $('#container'); //jquery object of game container
+    const $tile = $('<div>').addClass('tile');  //jquery object of template tile (not appended anywhere itself)
     const $gnome = $('<div>').attr('id','gnome');   //jquery object of gnome
-    const $tile = $('<div>').addClass('tile');
+    
     let side = 5;   //size of side of dungeon
     let startTile = Math.floor(side / 2); //where the gnome will start
+    const gnome = new Character('gnome',`${startTile},${startTile}`); //gnome, player character
 
+
+
+    //// FUNCTIONS /////
     //updates position coordinates of gnome or enemy based on current position
     const updatePosition = (actor) => {
         console.log(`updating position of ${actor.name}`);
@@ -33,14 +42,20 @@ $(() => {
         actor.position.west  = [pos[0], pos[1] - 1];
     }
 
+
+
+
     const moveGnome = (event) => {
         console.log('moving gnome');
 
         const clickID = $(event.currentTarget).attr('id');
         console.log(`clickID: ${clickID}`);
 
-        updatePosition(gnome);
+        //set previous to current
+        gnome.position.previous[0] = gnome.position.current[0];
+        gnome.position.previous[1] = gnome.position.current[1];
 
+        //update current based on tile clicked
         if(clickID === gnome.position.north.join('-')) {
             gnome.position.current[0]--;
         } else if(clickID === gnome.position.east.join('-')) {
@@ -54,18 +69,13 @@ $(() => {
         }
 
         updatePosition(gnome);
-        console.log(gnome.position);
 
-        const $newTile = $tile.clone();
-        console.log((`#${gnome.position.previous[0]}-${gnome.position.previous[1]}`))
-
-        // $(`#${gnome.position.previous[0]}-${gnome.position.previous[1]}`).replaceWith($newTile);
-        // $(`#${gnome.position.current[0]}-${gnome.position.current[1]}`).replaceWith($gnome);
-
-
-
-        gnome.getCurrentPosition();
+        const $test = $(`#${gnome.getCurrentPosition()}`);
+        $gnome.appendTo($test);
     }
+
+
+
 
     //generates dungeon and sets gnome to center
     const generateDungeon = () => {
@@ -85,10 +95,10 @@ $(() => {
         }
 
         gnome.position.current = [startTile, startTile];
-        const $replace = $(`#${gnome.position.current[0]}-${gnome.position.current[1]}`);
-        $replace.replaceWith($gnome);
+        $gnome.appendTo($(`#${startTile}-${startTile}`));
 
-        gnome.getCurrentPosition();
+        updatePosition(gnome);
+        // console.log(gnome.position);
     }
 
     generateDungeon();

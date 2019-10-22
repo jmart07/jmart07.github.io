@@ -2,20 +2,23 @@
     margin: 0;
 }
 
-#gnome {
-    border: 1px dashed blue;
-    background-color: red;
-    width: 98px;
-    height: 98px;
-}
-
 #container {
+    position: relative;
     border: 1px dashed blue;
     display: flex;
     flex-wrap: wrap;
     width: 500px;
     height: 500px;
+}
 
+#gnome {
+    position: absolute;
+    z-index: 1;
+    border: 1px dashed blue;
+    background-color: red;
+    border-radius: 50px;
+    width: 98px;
+    height: 98px;
 }
 
 .tile {
