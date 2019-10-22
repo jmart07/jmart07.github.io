@@ -1,0 +1,23 @@
+* {
+    margin: 0;
+}
+
+
+#container {
+    border: 1px dashed blue;
+    display: flex;
+    flex-wrap: wrap;
+    width: 500px;
+    height: 500px;
+
+}
+
+.tile {
+    display: flex;
+    border: 1px dashed blue;
+    min-width: 98px;
+    min-height: 98px;
+    width: 98px;
+    height: 98px;
+    background-color: gray;
+}
