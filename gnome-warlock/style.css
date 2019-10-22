@@ -1,7 +1,13 @@
-* {
+/* * {
     margin: 0;
 }
 
+#gnome {
+    border: 1px dashed blue;
+    background-color: red;
+    width: 98px;
+    height: 98px;
+}
 
 #container {
     border: 1px dashed blue;
@@ -20,4 +26,4 @@
     width: 98px;
     height: 98px;
     background-color: gray;
-}
+} */

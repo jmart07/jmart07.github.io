@@ -1,0 +1,36 @@
+PSEUDOCODE!
+
+Gameboard is square
+Gnome (player) generates in the middle
+Gnome goes first
+Enemies go second (in order of appearance on board)
+On each turn, gnome can move 1 and perform an action
+On each turn, enemies can either move or perform action (maybe)
+Survival, game gets harder as you go on, ends only when you die
+
+Setup
+1) create board based on side (tile divs)
+    nested for loops to give row/column, x/y values
+2) create gnome (div)
+    object from class with health, mana(maybe), lives(maybe), inventory
+3) replace center div with gnome
+
+Start Game
+1) enemy appears (Random along border?)
+    object from class with health and type
+2) player move/action (or action/move)
+3) enemy move/action (or action/move)
+    etc.
+
+Player moves
+    1) move to tile top/right/bottom/left (or maybe any surrounding) (optional)
+    2) attack (melee/ranged) (optional)
+    3) end turn (automated if move and action completed?)
+
+Enemy moves
+    1) move to tile top/right/bottom/left (or maybe any surrounding)
+
+Notes on movement:
+    Can't move into occupied space (walls/enemies)
+    Can move then attack or attack then move
+    
