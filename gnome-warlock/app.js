@@ -14,12 +14,12 @@ $(() => {
             }
         }
         getCurrentPosition () {
-            console.log(`getting current postion`);
+            console.log(`Getting current postion`);
             console.log(`${this.name}'s position: ${this.position.current.join('-')}`);
             return `${this.position.current.join('-')}`;
         }
         updatePosition () {
-            console.log(`updating position of ${this.name}`);
+            console.log(`Updating position of ${this.name}`);
     
             const pos = this.position.current;
             this.position.north = [pos[0] - 1, pos[1]];
@@ -28,7 +28,7 @@ $(() => {
             this.position.west  = [pos[0], pos[1] - 1];
         }
         moveCharacter (value) {
-            console.log(`moving ${this.name} ${value}`);
+            console.log(`Moving ${this.name} ${value}`);
     
             //set previous to current
             this.position.previous[0] = this.position.current[0];
@@ -36,21 +36,33 @@ $(() => {
     
             switch(value) {
                 case 'north':
-                    
-
-
-
-                    this.position.current[0]--;
-                    break;
+                    if(this.position.current[0] - 1 < 0) {
+                        break;
+                    } else {
+                        this.position.current[0]--;
+                        break;
+                    }
                 case 'east':
-                    this.position.current[1]++;
-                    break;
+                    if(this.position.current[1] + 1 > (side - 1)) {
+                        break;
+                    } else {
+                        this.position.current[1]++;
+                        break;
+                    }
                 case 'south':
-                    this.position.current[0]++;
-                    break;
+                    if(this.position.current[0] + 1 > (side - 1)) {
+                        break;
+                    } else {
+                        this.position.current[0]++;
+                        break;
+                    }
                 case 'west':
-                    this.position.current[1]--;
-                    break;
+                    if(this.position.current[1] - 1 < 0) {
+                        break;
+                    } else {
+                        this.position.current[1]--;
+                        break;
+                    }
             }
 
             this.updatePosition();

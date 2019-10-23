@@ -59,4 +59,6 @@
             } else {
                 console.log(`${this.name} can't move here`);
             }
+
+            
     
