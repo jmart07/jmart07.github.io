@@ -18,78 +18,96 @@ $(() => {
             console.log(`${this.name}'s position: ${this.position.current.join('-')}`);
             return `${this.position.current.join('-')}`;
         }
+        updatePosition () {
+            console.log(`updating position of ${this.name}`);
+    
+            const pos = this.position.current;
+            this.position.north = [pos[0] - 1, pos[1]];
+            this.position.east  = [pos[0], pos[1] + 1];
+            this.position.south = [pos[0] + 1, pos[1]];
+            this.position.west  = [pos[0], pos[1] - 1];
+        }
+        moveCharacter (value) {
+            console.log(`moving ${this.name} ${value}`);
+    
+            //set previous to current
+            this.position.previous[0] = this.position.current[0];
+            this.position.previous[1] = this.position.current[1];
+    
+            switch(value) {
+                case 'north':
+                    
+
+
+
+                    this.position.current[0]--;
+                    break;
+                case 'east':
+                    this.position.current[1]++;
+                    break;
+                case 'south':
+                    this.position.current[0]++;
+                    break;
+                case 'west':
+                    this.position.current[1]--;
+                    break;
+            }
+
+            this.updatePosition();
+    
+            const $newPosition = $(`#${this.getCurrentPosition()}`);
+            $newPosition.append($gnome);
+        }
     }
 
     const $container = $('#container'); //jquery object of game container
     const $tile = $('<div>').addClass('tile');  //jquery object of template tile (not appended anywhere itself)
     const $gnome = $('<div>').attr('id','gnome');   //jquery object of gnome
-    
+
     let side = 5;   //size of side of dungeon
     let startTile = Math.floor(side / 2); //where the gnome will start
     const gnome = new Character('gnome',`${startTile},${startTile}`); //gnome, player character
 
 
-
-    //// FUNCTIONS /////
-    //updates position coordinates of gnome or enemy based on current position
-    const updatePosition = (actor) => {
-        console.log(`updating position of ${actor.name}`);
-
-        const pos = actor.position.current;
-        actor.position.north = [pos[0] - 1, pos[1]];
-        actor.position.east  = [pos[0], pos[1] + 1];
-        actor.position.south = [pos[0] + 1, pos[1]];
-        actor.position.west  = [pos[0], pos[1] - 1];
-    }
-
-
-
-
-    const moveGnome = (event) => {
-        console.log('moving gnome');
-
-        const clickID = $(event.currentTarget).attr('id');
-        console.log(`clickID: ${clickID}`);
-
-        //set previous to current
-        gnome.position.previous[0] = gnome.position.current[0];
-        gnome.position.previous[1] = gnome.position.current[1];
-
-        //update current based on tile clicked
-        if(clickID === gnome.position.north.join('-')) {
-            gnome.position.current[0]--;
-        } else if(clickID === gnome.position.east.join('-')) {
-            gnome.position.current[1]++;
-        } else if(clickID === gnome.position.south.join('-')) {
-            gnome.position.current[0]++;
-        } else if(clickID === gnome.position.west.join('-')) {
-            gnome.position.current[1]--;
-        } else {
-            console.log(`gnome can't move here`);
+    //// FUNCTIONS ////
+    // any keyboard press in body will test to see if gnome should be moved using WASD keys
+    $('body').keydown((event) => {
+        event.preventDefault();
+        console.log(event.code);
+        switch(event.code) {
+            case 'KeyW':
+                console.log('moving north');
+                gnome.moveCharacter('north');
+                break;
+            case 'KeyA':
+                console.log('moving west');
+                gnome.moveCharacter('west');
+                break;
+            case 'KeyS':
+                console.log('moving south');
+                gnome.moveCharacter('south');
+                break;
+            case 'KeyD':
+                console.log('moving east');
+                gnome.moveCharacter('east');
+                break;
         }
-
-        updatePosition(gnome);
-
-        const $test = $(`#${gnome.getCurrentPosition()}`);
-        $gnome.appendTo($test);
-    }
+    })
 
 
-
+    
 
     //generates dungeon and sets gnome to center
     const generateDungeon = () => {
         
-        console.log('generating dungeon');
-        console.log(`side: ${side}`);
-        console.log(`startTile: ${startTile}`);
+        console.log(`Generating dungeon with side = ${side} and startTile = ${startTile}`);
 
         for(let row = 0; row < side; row++) {
             for(let column = 0; column < side; column++) {
                 const $newTile = $tile.clone();
                 $newTile.text(`row${row},column${column}`);
                 $newTile.attr('id',`${row}-${column}`);
-                $newTile.on('click', moveGnome);
+                // $newTile.on('click', moveCharacter);
                 $container.append($newTile);
             }
         }
@@ -97,7 +115,7 @@ $(() => {
         gnome.position.current = [startTile, startTile];
         $gnome.appendTo($(`#${startTile}-${startTile}`));
 
-        updatePosition(gnome);
+        gnome.updatePosition();
         // console.log(gnome.position);
     }
 

@@ -33,3 +33,30 @@
             return `${gnome.position.current.join('-')}`;
         }
     }
+
+    //updates position coordinates of gnome or enemy based on current position
+    // const updatePosition = (actor) => {
+    //     console.log(`updating position of ${actor.name}`);
+
+    //     const pos = actor.position.current;
+    //     actor.position.north = [pos[0] - 1, pos[1]];
+    //     actor.position.east  = [pos[0], pos[1] + 1];
+    //     actor.position.south = [pos[0] + 1, pos[1]];
+    //     actor.position.west  = [pos[0], pos[1] - 1];
+    // }
+
+
+
+            //update current based on tile clicked
+            if(value === this.position.north.join('-')) {
+                this.position.current[0]--;
+            } else if(value === this.position.east.join('-')) {
+                this.position.current[1]++;
+            } else if(value === this.position.south.join('-')) {
+                this.position.current[0]++;
+            } else if(value === this.position.west.join('-')) {
+                this.position.current[1]--;
+            } else {
+                console.log(`${this.name} can't move here`);
+            }
+    
