@@ -20,59 +20,11 @@ $(() => {
         }
         updatePosition () {
             console.log(`Updating position of ${this.name}`);
-    
             const pos = this.position.current;
             this.position.north = [pos[0] - 1, pos[1]];
             this.position.east  = [pos[0], pos[1] + 1];
             this.position.south = [pos[0] + 1, pos[1]];
             this.position.west  = [pos[0], pos[1] - 1];
-        }
-        moveCharacter (value) {
-            console.log(value);
-            console.log(`Moving ${this.name} ${value}`);
-
-            const clickID = $(value).currentTarget.attr('id');
-            console.log(`clickID: ${clickID}`);
-
-            //set previous to current
-            this.position.previous[0] = this.position.current[0];
-            this.position.previous[1] = this.position.current[1];
-    
-            switch(value) {
-                case clickID === gnome.position.north.join('-'):
-                    if(this.position.current[0] - 1 < 0) {
-                        break;
-                    } else {
-                        this.position.current[0]--;
-                        break;
-                    }
-                case clickID === gnome.position.east.join('-'):
-                    if(this.position.current[1] + 1 > (side - 1)) {
-                        break;
-                    } else {
-                        this.position.current[1]++;
-                        break;
-                    }
-                case clickID === gnome.position.south.join('-'):
-                    if(this.position.current[0] + 1 > (side - 1)) {
-                        break;
-                    } else {
-                        this.position.current[0]++;
-                        break;
-                    }
-                case clickID === gnome.position.west.join('-'):
-                    if(this.position.current[1] - 1 < 0) {
-                        break;
-                    } else {
-                        this.position.current[1]--;
-                        break;
-                    }
-            }
-
-            this.updatePosition();
-    
-            const $newPosition = $(`#${this.getCurrentPosition()}`);
-            $newPosition.append($gnome);
         }
     }
 
@@ -83,10 +35,38 @@ $(() => {
     let side = 5;   //size of side of dungeon
     let startTile = Math.floor(side / 2); //where the gnome will start
     const gnome = new Character('gnome',`${startTile},${startTile}`); //gnome, player character
-    console.log(gnome);
 
     //// FUNCTIONS ////
+    const moveGnome = (event) => {
+        console.log('Moving gnome');
 
+        const clickID = $(event.currentTarget).attr('id');
+        console.log(`clickID: ${clickID}`);
+
+        //set previous to current
+        gnome.position.previous[0] = gnome.position.current[0];
+        gnome.position.previous[1] = gnome.position.current[1];
+
+        switch(clickID) {
+            case gnome.position.north.join('-'):
+                gnome.position.current[0]--;
+                break;
+            case gnome.position.east.join('-'):
+                gnome.position.current[1]++;
+                break;
+            case gnome.position.south.join('-'):
+                gnome.position.current[0]++;
+                break;
+            case gnome.position.west.join('-'):
+                gnome.position.current[1]--;
+                break;
+        }
+
+        gnome.updatePosition();
+
+        const $newPosition = $(`#${gnome.getCurrentPosition()}`);
+        $newPosition.append($gnome);
+    }
     //generates dungeon and sets gnome to center
     const generateDungeon = () => {
         
@@ -98,7 +78,7 @@ $(() => {
                 // $newTile.text(`row${row},column${column}`);
                 $newTile.attr('id',`${row}-${column}`);
                 $newTile.css('grid-area', `${row + 1} / ${column + 1} / ${row + 2} / ${column + 2}`);
-                $newTile.on('click', gnome.moveCharacter);
+                $newTile.on('click', moveGnome);
                 $newTile.appendTo($container);
             }
         }

@@ -145,3 +145,123 @@
                 }
                 }
                 }; 
+
+
+
+                    // any keyboard press in body will test to see if gnome should be moved using WASD keys
+    $('body').keydown((event) => {
+        event.preventDefault();
+        console.log(event.code);
+        switch(event.code) {
+            case 'ArrowUp':
+                console.log('moving north');
+                gnome.moveCharacter('north');
+                break;
+            case 'ArrowLeft':
+                console.log('moving west');
+                gnome.moveCharacter('west');
+                break;
+            case 'ArrowDown':
+                console.log('moving south');
+                gnome.moveCharacter('south');
+                break;
+            case 'ArrowRight':
+                console.log('moving east');
+                gnome.moveCharacter('east');
+                break;
+        }
+    })
+
+    moveCharacter (value) {
+        console.log(`Moving ${this.name} ${value}`);
+
+        //set previous to current
+        this.position.previous[0] = this.position.current[0];
+        this.position.previous[1] = this.position.current[1];
+
+        switch(value) {
+            case 'north':
+                if(this.position.current[0] - 1 < 0) {
+                    break;
+                } else {
+                    this.position.current[0]--;
+                    break;
+                }
+            case 'east':
+                if(this.position.current[1] + 1 > (side - 1)) {
+                    break;
+                } else {
+                    this.position.current[1]++;
+                    break;
+                }
+            case 'south':
+                if(this.position.current[0] + 1 > (side - 1)) {
+                    break;
+                } else {
+                    this.position.current[0]++;
+                    break;
+                }
+            case 'west':
+                if(this.position.current[1] - 1 < 0) {
+                    break;
+                } else {
+                    this.position.current[1]--;
+                    break;
+                }
+        }
+
+        this.updatePosition();
+
+        const $newPosition = $(`#${this.getCurrentPosition()}`);
+        $newPosition.append($gnome);
+    }
+
+
+    class example {
+        constructor(something) {
+            something = something
+        }
+        functExample1 (event) {
+            console.log(event);
+            console.log(this);
+        }
+        functExample2 () {
+            console.log(this);
+        }
+    }
+
+
+
+
+
+
+    switch(clickID) {
+        case gnome.position.north.join('-'):
+            if(gnome.position.current[0] - 1 < 0) {
+                break;
+            } else {
+                gnome.position.current[0]--;
+                break;
+            }
+        case gnome.position.east.join('-'):
+            if(gnome.position.current[1] + 1 > (side - 1)) {
+                break;
+            } else {
+                gnome.position.current[1]++;
+                break;
+            }
+        case gnome.position.south.join('-'):
+            if(gnome.position.current[0] + 1 > (side - 1)) {
+                break;
+            } else {
+                gnome.position.current[0]++;
+                break;
+            }
+        case gnome.position.west.join('-'):
+            if(gnome.position.current[1] - 1 < 0) {
+                break;
+            } else {
+                gnome.position.current[1]--;
+                break;
+            }
+    }
