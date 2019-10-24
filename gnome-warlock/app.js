@@ -76,7 +76,7 @@ $(() => {
     const $tile = $('<div>').addClass('tile');  //jquery object of template tile (not appended anywhere itself)
     const $gnome = $('<div>').attr('id','gnome');   //jquery object of gnome
 
-    let side = 10;   //size of side of dungeon
+    let side = 5;   //size of side of dungeon
     let startTile = Math.floor(side / 2); //where the gnome will start
     const gnome = new Character('gnome',`${startTile},${startTile}`); //gnome, player character
 
@@ -86,19 +86,19 @@ $(() => {
         event.preventDefault();
         console.log(event.code);
         switch(event.code) {
-            case 'KeyW':
+            case 'ArrowUp':
                 console.log('moving north');
                 gnome.moveCharacter('north');
                 break;
-            case 'KeyA':
+            case 'ArrowLeft':
                 console.log('moving west');
                 gnome.moveCharacter('west');
                 break;
-            case 'KeyS':
+            case 'ArrowDown':
                 console.log('moving south');
                 gnome.moveCharacter('south');
                 break;
-            case 'KeyD':
+            case 'ArrowRight':
                 console.log('moving east');
                 gnome.moveCharacter('east');
                 break;
@@ -113,7 +113,7 @@ $(() => {
         for(let column = 0; column < side; column++){
             for(let row = 0; row < side; row++){
                 const $newTile = $tile.clone();
-                $newTile.text(`row${row},column${column}`);
+                // $newTile.text(`row${row},column${column}`);
                 $newTile.attr('id',`${row}-${column}`);
                 $newTile.css('grid-area', `${row + 1} / ${column + 1} / ${row + 2} / ${column + 2}`);
                 $newTile.appendTo($container);

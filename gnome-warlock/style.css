@@ -4,28 +4,26 @@
 
 #container {
     display: grid;
-    /* position: relative; */
+    grid-template: repeat(5, 50px);
+    grid-gap: 0px;
+    position: relative;
     border: 1px dashed blue;
 }
 
 #gnome {
-    align-self: center;
-    justify-self: center;
-    /* place-self: center; */
-    /* position: absolute; */
+    place-self: center;
+    position: absolute;
     z-index: 1;
     border: 1px dashed blue;
     background-color: red;
     border-radius: 50px;
-    width: 50px;
-    height: 50px;
+    /* width: 50px;
+    height: 50px; */
 }
 
 .tile {
     border: 1px dashed blue;
-    min-width: 98px;
-    min-height: 98px;
-    width: 98px;
-    height: 98px;
     background-color: gray;
+    width: 50px;
+    height: 50px;
 }
