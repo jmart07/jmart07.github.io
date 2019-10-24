@@ -76,10 +76,9 @@ $(() => {
     const $tile = $('<div>').addClass('tile');  //jquery object of template tile (not appended anywhere itself)
     const $gnome = $('<div>').attr('id','gnome');   //jquery object of gnome
 
-    let side = 5;   //size of side of dungeon
+    let side = 10;   //size of side of dungeon
     let startTile = Math.floor(side / 2); //where the gnome will start
     const gnome = new Character('gnome',`${startTile},${startTile}`); //gnome, player character
-
 
     //// FUNCTIONS ////
     // any keyboard press in body will test to see if gnome should be moved using WASD keys
@@ -106,21 +105,18 @@ $(() => {
         }
     })
 
-
-    
-
     //generates dungeon and sets gnome to center
     const generateDungeon = () => {
         
         console.log(`Generating dungeon with side = ${side} and startTile = ${startTile}`);
 
-        for(let row = 0; row < side; row++) {
-            for(let column = 0; column < side; column++) {
+        for(let column = 0; column < side; column++){
+            for(let row = 0; row < side; row++){
                 const $newTile = $tile.clone();
                 $newTile.text(`row${row},column${column}`);
                 $newTile.attr('id',`${row}-${column}`);
-                // $newTile.on('click', moveCharacter);
-                $container.append($newTile);
+                $newTile.css('grid-area', `${row + 1} / ${column + 1} / ${row + 2} / ${column + 2}`);
+                $newTile.appendTo($container);
             }
         }
 
