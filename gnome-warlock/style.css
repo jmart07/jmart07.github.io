@@ -4,14 +4,22 @@
 
 #container {
     display: grid;
-    grid-template: repeat(5, 50px);
+    grid-template-areas: 1rem 1rem 1rem 1rem 1rem;
     grid-gap: 0px;
+    justify-content: center;
     position: relative;
     border: 1px dashed blue;
 }
 
+.tile {
+    border: 1px dashed blue;
+    background-color: gray;
+    width: 50px;
+    height: 50px;
+}
+
+
 #gnome {
-    /* place-self: center; */
     position: absolute;
     z-index: 1;
     border: 1px dashed blue;
@@ -21,9 +29,13 @@
     height: 50px;
 }
 
-.tile {
+
+.enemy {
+    position: absolute;
+    z-index: 1;
     border: 1px dashed blue;
-    background-color: gray;
+    background-color: red;
+    border-radius: 50px;
     width: 50px;
     height: 50px;
 }
