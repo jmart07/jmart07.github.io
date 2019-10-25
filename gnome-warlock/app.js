@@ -2,9 +2,13 @@ $(() => {
     //// ACTORS ////
     //class for creating gnome (player) and enemies
     class Character {
-        constructor(name, id, current) {
+        constructor(name, id, health, damage, current) {
             this.name = name;
             this.div = $('<div>').attr('id', id);
+            this.health = health;
+            this.damage = damage;
+            this.move = true;
+            this.attack = true;
             this.position = {
                 current: current,
                 previous: [0,0],
@@ -30,10 +34,12 @@ $(() => {
         }
         moveCharacter (event) {
             const clickID = $(event.currentTarget).attr('id');
+            const clickIDArr = [clickID.charAt(0),clickID.charAt(2)];
             console.log(`Moving ${this.name} to ClickID: ${clickID}`);
 
-            if(isTileOccupied(clickID)) {
-                console.log('not moving');
+            if(isTileOccupied(clickIDArr)) {
+                const victimID = $(`#${clickID}`).children().attr('id');
+                this.melee(victimID);
                 return;
             } else {
                 //set previous to current
@@ -42,33 +48,21 @@ $(() => {
 
                 switch(clickID) {
                     case this.position.north.join('-'):
-                        if(this.position.current[0] - 1 < 0) {
-                            break;
-                        } else {
-                            this.position.current[0]--;
-                            break;
-                        }
+                        this.position.current[0]--;
+                        this.move = false;
+                        break;
                     case this.position.east.join('-'):
-                        if(this.position.current[1] + 1 > (side - 1)) {
-                            break;
-                        } else {
-                            this.position.current[1]++;
-                            break;
-                        }
+                        this.position.current[1]++;
+                        this.move = false;
+                        break;
                     case this.position.south.join('-'):
-                        if(this.position.current[0] + 1 > (side - 1)) {
-                            break;
-                        } else {
-                            this.position.current[0]++;
-                            break;
-                        }
+                        this.position.current[0]++;
+                        this.move = false;
+                        break;
                     case this.position.west.join('-'):
-                        if(this.position.current[1] - 1 < 0) {
-                            break;
-                        } else {
-                            this.position.current[1]--;
-                            break;
-                        }
+                        this.position.current[1]--;
+                        this.move = false;
+                        break;
                     default:
                         console.log(`--${this.name} can't move to ${clickID}`)
                         break;
@@ -77,20 +71,20 @@ $(() => {
     
                 const $newPosition = $(`#${this.getCurrentPosition()}`);
                 $newPosition.append(gnome.div);
+
+                // if(this.div.attr('id') === 'gnome') {
+                //     $('.tile').off('click');
+                // }
             }
         }
-        // checkNESW () {
-        //     console.log('Checking NESW');
-
-        //     this.position.forEach((value) => {
-        //         switch(value) {
-        //             case: 
-        //         }
-
-        //     })
+        melee (foeID) {
+            const $foe = $(`#${foeID}`);
+            console.log(`Melee-ing ${foeID}`);
+            console.log($foe)
 
 
-        // }
+
+        }
     }
 
     const $container = $('#container'); //jquery object of game container
@@ -99,11 +93,15 @@ $(() => {
     let side = 5;   //size of side of dungeon
     let startTile = Math.floor(side / 2); //where the gnome will start
     let level = 1;  //level of the game
-    const gnome = new Character('gnome', 'gnome', [startTile, startTile]); //gnome, player character
+    let turn = 1;   //turn number
+    let move = true;  //is a move available
+    let attack = true; //is an attack available
+
+    const gnome = new Character('gnome', 'gnome', 100, 15, [startTile, startTile]); //gnome, player character
     let enemies = []; //used to create ids of enemy divs
 
     //// FUNCTIONS ////
-    //generates dungeon and sets gnome to center
+    //generates dungeon and sets gnome to center and generates enemies based on level
     const generateDungeon = () => {
         
         console.log(`Generating dungeon with side = ${side} and startTile = ${startTile}`);
@@ -121,43 +119,92 @@ $(() => {
 
         gnome.div.appendTo($(`#${startTile}-${startTile}`));
         gnome.updatePosition();
+
+        for(let i = 0; i < level; i++) {
+            let randomLocation = getRandomLocation();
+            while(isTileOccupied(randomLocation)) {
+                randomLocation = getRandomLocation();
+            }
+            generateEnemy(randomLocation);
+        }
     }
 
-    //checks if any div with class .tile has children elements. param is x and y coordinates in for "x-y"
+    const getRandomLocation = () => {
+        return [Math.floor(Math.random() * side), Math.floor(Math.random() * side)];
+    }
+
+    //checks if any div with class .tile has children elements
     const isTileOccupied = (location) => {
-        const $location = $(`#${location}`);
-        console.log(`Checking if ${location} is occupied`)
+        const locationStr = `${location[0]}-${location[1]}`;
+        const $location = $(`#${locationStr}`);
+        console.log(`Checking if ${locationStr} is occupied`)
 
         if($location.children().length === 0) {
-            console.log(`--${location} is empty`);
+            console.log(`--${locationStr} is empty`);
             return false;
         } else {
-            console.log(`--${location} is occupied`);
+            console.log(`--${locationStr} is occupied`);
             return true;
         }
     }
 
-    const generateEnemy = () => {
+    const generateEnemy = (location) => {
         console.log(`Generating enemy`);
         const enemyNum = enemies.length;
-        const enemyPosition = [0,0];
 
-        enemies.push(new Character(`enemy${enemyNum}` /*name*/, `enemy${enemyNum}`/*id*/, enemyPosition));
+        enemies.push(new Character(
+            `enemy${enemyNum}` /*name*/,
+            `enemy${enemyNum}`/*id*/,
+            25 /*health*/,
+            10 /*damage*/,
+            location /*location*/
+        ));
         enemies[enemyNum].div.addClass('enemy');
-        console.log(`--generated #${$(enemies[enemyNum].div).attr('id')} at ${enemyPosition}`);
+        console.log(`--generated #${$(enemies[enemyNum].div).attr('id')} at ${location}`);
 
         const $enemyStart = $(`#${enemies[enemyNum].position.current.join('-')}`);
         $($enemyStart).append(enemies[enemyNum].div);
-
     }
 
-    const startGame = () => {
+    const startLevel = () => {
+        console.log(`Starting level ${level}`);
+        turn = 1;
         generateDungeon();
-        generateEnemy();
-        isTileOccupied([0,0]);
+
+        while(enemies.length > 0 || gnome.health > 0) {
+            if(turn % 2 != 0) {
+                console.log(`--turn ${turn}: player`);
+    
+                // while(gnome.move || gnome.attack) {
+                //     $('.tile').on('click', () => { gnome.moveCharacter(event); });
+
+
+                //     attack = false;
+                // }
+
+            } else {
+                console.log(`--turn ${turn}: enemies`);
+
+
+
+
+
+
+            }
+            if(turn > 20) {
+                break;
+            }
+            turn++;
+        }
+
+
+
+
+
+
     }
 
 
     //Starts the game
-    startGame();
+    startLevel();
 });
