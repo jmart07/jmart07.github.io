@@ -16,7 +16,7 @@ $(() => {
         }
         getCurrentPosition () {
             console.log(`Getting current postion`);
-            console.log(`${this.name}'s position: ${this.position.current.join('-')}`);
+            console.log(`--${this.name}'s position: ${this.position.current.join('-')}`);
             return `${this.position.current.join('-')}`;
         }
         updatePosition () {
@@ -29,7 +29,6 @@ $(() => {
             this.position.west  = [pos[0], pos[1] - 1];
         }
         moveCharacter (event) {
-            console.log(event);
             const clickID = $(event.currentTarget).attr('id');
             console.log(`Moving ${this.name} to ClickID: ${clickID}`);
 
@@ -66,6 +65,9 @@ $(() => {
                         this.position.current[1]--;
                         break;
                     }
+                default:
+                    console.log(`--${this.name} can't move to ${clickID}`)
+                    break;
             }
 
             this.updatePosition();
@@ -80,7 +82,7 @@ $(() => {
 
     let side = 5;   //size of side of dungeon
     let startTile = Math.floor(side / 2); //where the gnome will start
-    const gnome = new Character('gnome', 'gnome', [`${startTile},${startTile}`]); //gnome, player character
+    const gnome = new Character('gnome', 'gnome', [startTile, startTile]); //gnome, player character
     let enemies = []; //used to create ids of enemy divs
 
     //// FUNCTIONS ////
@@ -105,15 +107,16 @@ $(() => {
     }
 
     const generateEnemy = () => {
+        console.log(`Generating enemy`);
         const enemyNum = enemies.length;
-        const enemyPosition = [`0,0`];
-        console.log(`Generating enemy #${enemyNum}`);
+        const enemyPosition = [0,0];
 
-        enemies.push(new Character(`enemy${enemyNum}`, `enemy${enemyNum}`, enemyPosition));
-        console.log(enemies[enemyNum].position.current.join('-'));
-        console.log('test')
-        console.log($(`#${enemies[enemyNum].position.current}`));
-        $(`#${enemies[enemyNum].position.current}`).append(enemies[enemyNum].div);
+        enemies.push(new Character(`enemy${enemyNum}` /*name*/, `enemy${enemyNum}`/*id*/, enemyPosition));
+        enemies[enemyNum].div.addClass('enemy');
+        console.log(`--generated #${$(enemies[enemyNum].div).attr('id')} at ${enemyPosition}`);
+
+        const $enemyStart = $(`#${enemies[enemyNum].position.current.join('-')}`);
+        $($enemyStart).append(enemies[enemyNum].div);
 
     }
 
