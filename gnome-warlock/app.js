@@ -90,13 +90,16 @@ $(() => {
             console.log(`--damge: ${this.damage}`);
             foe.health -= this.damage;
             console.log(`--after: ${foe.health}`);
+            foe.isDead();
         }
         isDead () {
-            
-
-
-
-
+            console.log(`Checking if ${this.name} is dead`);
+            if(this.health <= 0) {
+                console.log(`--${this.name} is dead`);
+                this.div.remove();
+            } else {
+                console.log(`--${this.name} is not dead`);
+            }
         }
     }
 
