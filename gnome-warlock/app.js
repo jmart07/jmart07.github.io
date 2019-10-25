@@ -38,9 +38,16 @@ $(() => {
             console.log(`Moving ${this.name} to ClickID: ${clickID}`);
 
             if(isTileOccupied(clickIDArr)) {
-                const victimID = $(`#${clickID}`).children().attr('id');
-                this.melee(victimID);
-                return;
+                const $victim = $(`#${clickID}`).children();
+                const victimID = $victim.attr('id');
+                if($victim.hasClass('enemy')) {
+                    const index = $.inArray(victimID, enemies.map((value) => {return value.name;}));
+                    this.melee(enemies[index])
+                    return;
+                } else {
+                    // this.melee(victimID);
+                    return;
+                }
             } else {
                 //set previous to current
                 this.position.previous[0] = this.position.current[0];
@@ -77,10 +84,16 @@ $(() => {
                 // }
             }
         }
-        melee (foeID) {
-            const $foe = $(`#${foeID}`);
-            console.log(`Melee-ing ${foeID}`);
-            console.log($foe)
+        melee (foe) {
+            console.log(`Melee-ing ${foe.name}`);
+            console.log(`--before: ${foe.health}`);
+            console.log(`--damge: ${this.damage}`);
+            foe.health -= this.damage;
+            console.log(`--after: ${foe.health}`);
+        }
+        isDead () {
+            
+
 
 
 
@@ -120,7 +133,7 @@ $(() => {
         gnome.div.appendTo($(`#${startTile}-${startTile}`));
         gnome.updatePosition();
 
-        for(let i = 0; i < level; i++) {
+        for(let i = 0; i < 5; i++) {
             let randomLocation = getRandomLocation();
             while(isTileOccupied(randomLocation)) {
                 randomLocation = getRandomLocation();
@@ -170,6 +183,8 @@ $(() => {
         console.log(`Starting level ${level}`);
         turn = 1;
         generateDungeon();
+
+        console.log(enemies);
 
         while(enemies.length > 0 || gnome.health > 0) {
             if(turn % 2 != 0) {
