@@ -110,6 +110,7 @@ $(() => {
     let startTile = Math.floor(side / 2); //where the gnome will start
     let level = 1;  //level of the game
     let turn = 1;   //turn number
+    let moveOrAttack = true;
     let move = true;  //is a move available
     let attack = true; //is an attack available
 
@@ -118,6 +119,26 @@ $(() => {
 
     //// FUNCTIONS ////
     //generates dungeon and sets gnome to center and generates enemies based on level
+    $('#move').on('click', () => {
+        console.log('Move mode on');
+        moveOrAttack = true;
+
+
+
+
+    })
+
+    $('#attack').on('click', () => {
+        console.log('Attack mode on');
+        moveOrAttack = false;
+
+
+
+        
+    })
+
+
+
     const generateDungeon = () => {
         
         console.log(`Generating dungeon with side = ${side} and startTile = ${startTile}`);
@@ -128,7 +149,12 @@ $(() => {
                 // $newTile.text(`row${row},column${column}`);
                 $newTile.attr('id',`${row}-${column}`);
                 $newTile.css('grid-area', `${row + 1} / ${column + 1} / ${row + 2} / ${column + 2}`);
-                $newTile.on('click', () => { gnome.moveCharacter(event); });
+                $newTile.on('click', () => { 
+                    if(moveOrAttack) {
+                        gnome.moveCharacter(event);
+                    } else {
+                        gnome.attack(event);
+                }});
                 $newTile.appendTo($container);
             }
         }
