@@ -6,16 +6,16 @@
     display: grid;
     grid-template-areas: 1rem 1rem 1rem 1rem 1rem;
     grid-gap: 0px;
-    justify-content: center;
+    justify-content: left;
     position: relative;
-    border: 1px dashed blue;
+    /* border: 1px dashed blue; */
 }
 
 .tile {
-    border: 1px dashed blue;
-    background-color: gray;
-    width: 100px;
-    height: 100px;
+    /* border: 1px solid rgb(117, 117, 117); */
+    background-image: url("img/tile4.png");
+    width: 75px;
+    height: 75px;
 }
 
 
@@ -25,20 +25,16 @@
     justify-self: center;
     /* place-self: center; */
     z-index: 1;
-    border: 1px dashed blue;
-    background-color: red;
-    border-radius: 50px;
-    width: 50px;
-    height: 50px;
+    background-image: url("img/gnome_tile.png");
+    width: 75px;
+    height: 75px;
 }
 
 
 .enemy {
     position: absolute;
     z-index: 1;
-    border: 1px dashed blue;
-    background-color: white;
-    border-radius: 50px;
-    width: 50px;
-    height: 50px;
+    background-image: url("img/enemy_tile.png");
+    width: 75px;
+    height: 75px;
 }
