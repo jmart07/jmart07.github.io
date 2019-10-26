@@ -7,8 +7,9 @@ $(() => {
             this.div = $('<div>').attr('id', id);
             this.health = health;
             this.damage = damage;
-            this.move = true;
-            this.attack = true;
+            this.hasMove = true;
+            this.hasMelee = true;
+            this.hasRanged = true;
             this.position = {
                 current: current,
                 previous: [0,0],
@@ -32,43 +33,38 @@ $(() => {
             this.position.south = [pos[0] + 1, pos[1]];
             this.position.west  = [pos[0], pos[1] - 1];
         }
-        moveCharacter (event) {
-            const clickID = $(event.currentTarget).attr('id');
-            const clickIDArr = [clickID.charAt(0),clickID.charAt(2)];
+        checkAround () {
+            console.log(`i should make this function probably`);
+        }
+        move (event) {
+            const clickID = $(event.currentTarget).attr('id');  //location of click in "column-row" string form
+            const clickIDArr = [clickID.charAt(0),clickID.charAt(2)]; //location of click in [column,row] array form
             console.log(`Moving ${this.name} to ClickID: ${clickID}`);
-
+            //check if tile is occupied first
             if(isTileOccupied(clickIDArr)) {
-                const $victim = $(`#${clickID}`).children();
-                const victimID = $victim.attr('id');
-                if($victim.hasClass('enemy')) {
-                    const index = $.inArray(victimID, enemies.map((value) => {return value.name;}));
-                    this.melee(enemies[index])
-                    return;
-                } else {
-                    // this.melee(victimID);
-                    return;
-                }
+                console.log(`--can't move here`);
+                return;
             } else {
                 //set previous to current
                 this.position.previous[0] = this.position.current[0];
                 this.position.previous[1] = this.position.current[1];
-
+                //check if location clicked is NESW and update current accordingly, or 
                 switch(clickID) {
                     case this.position.north.join('-'):
                         this.position.current[0]--;
-                        this.move = false;
+                        this.hasMove = false;
                         break;
                     case this.position.east.join('-'):
                         this.position.current[1]++;
-                        this.move = false;
+                        this.hasMove = false;
                         break;
                     case this.position.south.join('-'):
                         this.position.current[0]++;
-                        this.move = false;
+                        this.hasMove = false;
                         break;
                     case this.position.west.join('-'):
                         this.position.current[1]--;
-                        this.move = false;
+                        this.hasMove = false;
                         break;
                     default:
                         console.log(`--${this.name} can't move to ${clickID}`)
@@ -78,19 +74,48 @@ $(() => {
     
                 const $newPosition = $(`#${this.getCurrentPosition()}`);
                 $newPosition.append(gnome.div);
-
-                // if(this.div.attr('id') === 'gnome') {
-                //     $('.tile').off('click');
-                // }
             }
         }
-        melee (foe) {
-            console.log(`Melee-ing ${foe.name}`);
-            console.log(`--before: ${foe.health}`);
-            console.log(`--damge: ${this.damage}`);
-            foe.health -= this.damage;
-            console.log(`--after: ${foe.health}`);
-            foe.isDead();
+        melee (event) {
+            const clickID = $(event.currentTarget).attr('id');    //location of click in "column-row" string form
+            const $foe = $(`#${clickID}`).children().eq(0);
+            let foe;
+            console.log(`Melee-ing tile ${clickID}`);
+            //checking if tile has anyone on it
+            if($foe.length === 0) {
+                console.log(`--there's no one to attack at ${clickID}`);
+                return
+            }
+            //checking if tile is within reach (NESW)
+            if( clickID === this.position.north.join('-') ||
+                clickID === this.position.east.join('-')  ||
+                clickID === this.position.south.join('-') ||
+                clickID === this.position.west.join('-')) {
+                if($foe.hasClass('enemy')) {
+                    console.log(`--foe is enemy`)
+                    for(let i = 0; i < enemies.length; i++) {
+                        if(enemies[i].name === $foe.attr('id')) {
+                            foe = enemies[i];
+                        }
+                    }
+                } else {
+                    foe = gnome;
+                }
+                console.log(`--before: ${foe.health}`);
+                console.log(`--damge: ${this.damage}`);
+                foe.health -= this.damage;
+                console.log(`--after: ${foe.health}`);
+                foe.isDead();
+            } else {
+                console.log(`--${clickID} is out of range`);
+                return;
+            }
+        }
+        ranged (event) {
+            console.log(event)
+
+
+
         }
         isDead () {
             console.log(`Checking if ${this.name} is dead`);
@@ -103,42 +128,36 @@ $(() => {
         }
     }
 
+    ///////// JQUERY OBJECTS /////////
     const $container = $('#container'); //jquery object of game container
     const $tile = $('<div>').addClass('tile');  //jquery object of template tile (not appended anywhere itself)
 
+    ///////// GAMEPLAY VARIABLES /////////
     let side = 5;   //size of side of dungeon
     let startTile = Math.floor(side / 2); //where the gnome will start
     let level = 1;  //level of the game
     let turn = 1;   //turn number
-    let moveOrAttack = true;
-    let move = true;  //is a move available
-    let attack = true; //is an attack available
+    let mode = 'move'; //determines which mode player is in
 
+    ///////// CHARACTER VARIABLES /////////
     const gnome = new Character('gnome', 'gnome', 100, 15, [startTile, startTile]); //gnome, player character
     let enemies = []; //used to create ids of enemy divs
 
-    //// FUNCTIONS ////
-    //generates dungeon and sets gnome to center and generates enemies based on level
+    ///////// ON-CLICK FUNCTIONS /////////
     $('#move').on('click', () => {
         console.log('Move mode on');
-        moveOrAttack = true;
-
-
-
-
+        mode = 'move';
+    })
+    $('#melee').on('click', () => {
+        console.log('Melee mode on');
+        mode = 'melee'
+    })
+    $('#ranged').on('click', () => {
+        console.log('Ranged mode on');
+        mode = 'ranged'
     })
 
-    $('#attack').on('click', () => {
-        console.log('Attack mode on');
-        moveOrAttack = false;
-
-
-
-        
-    })
-
-
-
+    //generates dungeon and sets gnome to center and generates enemies based on level
     const generateDungeon = () => {
         
         console.log(`Generating dungeon with side = ${side} and startTile = ${startTile}`);
@@ -149,12 +168,16 @@ $(() => {
                 // $newTile.text(`row${row},column${column}`);
                 $newTile.attr('id',`${row}-${column}`);
                 $newTile.css('grid-area', `${row + 1} / ${column + 1} / ${row + 2} / ${column + 2}`);
+                
                 $newTile.on('click', () => { 
-                    if(moveOrAttack) {
-                        gnome.moveCharacter(event);
+                    if(mode === 'move') {
+                        gnome.move(event);
+                    } else if(mode === 'melee') {
+                        gnome.melee(event);
                     } else {
-                        gnome.attack(event);
-                }});
+                        gnome.ranged(event);
+                    }
+                });
                 $newTile.appendTo($container);
             }
         }
@@ -213,33 +236,33 @@ $(() => {
         turn = 1;
         generateDungeon();
 
-        console.log(enemies);
+        // console.log(enemies);
 
-        while(enemies.length > 0 || gnome.health > 0) {
-            if(turn % 2 != 0) {
-                console.log(`--turn ${turn}: player`);
+        // while(enemies.length > 0 || gnome.health > 0) {
+        //     if(turn % 2 != 0) {
+        //         console.log(`--turn ${turn}: player`);
     
-                // while(gnome.move || gnome.attack) {
-                //     $('.tile').on('click', () => { gnome.moveCharacter(event); });
+        //         // while(gnome.move || gnome.attack) {
+        //         //     $('.tile').on('click', () => { gnome.moveCharacter(event); });
 
 
-                //     attack = false;
-                // }
+        //         //     attack = false;
+        //         // }
 
-            } else {
-                console.log(`--turn ${turn}: enemies`);
-
-
-
+        //     } else {
+        //         console.log(`--turn ${turn}: enemies`);
 
 
 
-            }
-            if(turn > 20) {
-                break;
-            }
-            turn++;
-        }
+
+
+
+        //     }
+        //     if(turn > 20) {
+        //         break;
+        //     }
+        //     turn++;
+        // }
 
 
 

@@ -267,3 +267,15 @@
     }
 
     
+
+
+    const $victim = $(`#${clickID}`).children();
+    const victimID = $victim.attr('id');
+    if($victim.hasClass('enemy')) {
+        const index = $.inArray(victimID, enemies.map((value) => {return value.name;}));
+        this.melee(enemies[index])
+        return;
+    } else {
+        // this.melee(victimID);
+        return;
+    }
