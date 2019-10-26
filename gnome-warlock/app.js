@@ -346,7 +346,7 @@ const startLevel = () => {
     $level.text(`Level: ${level}`)
     console.log(`Starting level ${level}`);
     numEnemies ++;
-    if(level % 4 === 0 & side < 9) {
+    if(level % 3 === 0 & side < 9) {
         side += 2;
         startTile++;
         numEnemies += 2;

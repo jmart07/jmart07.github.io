@@ -1,36 +1,53 @@
 * {
     margin: 0;
+    font-family: 'Big Shoulders Text', cursive;
+    color: rgb(36, 7, 51);
 }
-
+body {
+    background-image: url("img/background2.png");
+    background-repeat: repeat;
+}
+h1 {
+    font-size: 50px;
+    margin: 0px 0px 10px 0px;
+}
+#header {
+    padding: 20px;
+    background: rgba(97, 97, 97, 0.8);
+}
+button {
+    display: inline-block;
+    padding: 10px 50px;
+    margin: 20px 5px 0px 5px;
+    border-radius:2em;
+    box-sizing: border-box;
+    font-size: 20px;
+    color: ivory;
+    background-color:#6e4b8a;
+    text-align:center;
+}
 #container {
+    margin: 30px;
+    /* border: 5px solid rgb(41, 41, 41); */
+    padding: 0px;
     display: grid;
     grid-template-areas: 1rem 1rem 1rem 1rem 1rem;
     grid-gap: 0px;
     justify-content: left;
     position: relative;
-    /* border: 1px dashed blue; */
 }
-
 .tile {
-    /* border: 1px solid rgb(117, 117, 117); */
     background-image: url("img/tile4.png");
     width: 75px;
     height: 75px;
 }
-
-
 #gnome {
     position: absolute;
-    align-self: center;
-    justify-self: center;
-    /* place-self: center; */
     z-index: 1;
     background-image: url("img/gnome_tile.png");
     width: 75px;
     height: 75px;
 }
-
-
 .enemy {
     position: absolute;
     z-index: 1;
