@@ -279,3 +279,8 @@
         // this.melee(victimID);
         return;
     }
+
+
+                        // enemies[i].div.remove();
+                    // enemies.splice(i, 1);
+                    // console.log(enemies);
