@@ -1,2 +1,2 @@
-dependencies:
-    npm i express express-react-views method-override mongoose react react-dom
+npm init -y
+npm i express express-react-views method-override mongoose react react-dom
