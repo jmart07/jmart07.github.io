@@ -5,18 +5,9 @@ class Index extends React.Component {
     render() {
         return(
             <AppLayout title="This will be the index...">
-                <ul>
-                {
-                    this.props.tasks.map((task, i) => {
-                        return(
-                            <li id={i} key={`li${i}`}>
-                                <a href={`/tasks/${task._id}`}>{task.name}</a>
-                                {/* <a href={`/tasks/${task._id}`}>{task.dueDate}</a> */}
-                            </li>
-                        )
-                    })
-                }
-                </ul>
+                    <div>
+                        <h3><a href="/tasks">See all tasks</a></h3>
+                    </div>
             </AppLayout>
         );
     }
