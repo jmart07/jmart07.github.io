@@ -4,9 +4,9 @@ const AppLayout = require('./layout/AppLayout.jsx')
 class Index extends React.Component {
     render() {
         return(
-            <AppLayout title="This will be the index...">
+            <AppLayout title="Due Today">
                     <div>
-                        <h3><a href="/tasks">See all tasks</a></h3>
+                        <h3><a href="/tasks">Show All</a></h3>
                     </div>
             </AppLayout>
         );

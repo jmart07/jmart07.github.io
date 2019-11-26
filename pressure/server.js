@@ -12,8 +12,7 @@ app.use(methodOverride('_method'));
 app.use(express.urlencoded({extended: true}));
 app.use(express.static('public'));
 
-const Tasks = require('./models/Tasks.js')
-// const Calendars = require('./models/Calendars.js')
+const Tasks = require('./models/Tasks.js');
 
 const tasksController = require('./controllers/tasks.js');
 
