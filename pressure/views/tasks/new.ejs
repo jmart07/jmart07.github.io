@@ -2,11 +2,15 @@
 <%- include("../template/nav.ejs") %>
 
 <body>
-    <form action="/tasks" method="POST">
-        <label>Name</label>
-        <input type="text" name="name"/></br>
-        <label>Due Date</label>
-        <input type="date" name="dueDate"/></br>
-        <input type="submit" name="" value="Create item"/>
-    </form>
+    <div class="container">
+        <form action="/tasks" method="POST">
+            <label>Name</label>
+            <input type="text" name="name"/></br>
+            <label>Due Date</label>
+            <input type="date" name="dueDate"/></br>
+            <label>Notes</label>
+            <input type="text" name="notes"/>
+            <input type="submit" name="" value="Create item"/>
+        </form>
+    </div>
 </body>

@@ -25,11 +25,16 @@ router.get('/new', (req, res) => {
 router.get('/:id', (req, res) => {
     console.log(`show accessed. ID: ${req.params.id}`);
     Tasks.findById(req.params.id, (err, task) => {
-        err ? console.log(err) : res.render(
-            'tasks/show.ejs', {
-                task: task
-            }
-        );
+        if(err) {
+            console.log(err);
+        } else {
+            console.log(task);
+            res.render('tasks/show.ejs',
+                {
+                    task: task
+                }
+            );
+        };
     });
 });
 //Create
@@ -47,11 +52,16 @@ router.post('/', (req, res) => {
 router.get('/edit/:id', (req, res) => {
     console.log(`edit accessed. ID: ${req.params.id}`);
     Tasks.findById(req.params.id, (err, task) => {
-        err ? console.log(err) : res.render(
-            'tasks/edit.ejs', {
-                task: task
-            }
-        );
+        if(err) {
+            console.log(err);
+        } else {
+            console.log(task)
+            res.render('tasks/edit.ejs',
+                {
+                    task: task
+                }
+            );
+        }
     });
 });
 router.put('/:id', (req, res) => {

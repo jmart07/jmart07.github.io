@@ -3,39 +3,47 @@
     padding: 0px;
     font-family: 'Poppins', sans-serif;
 }
-
 body {
     background-color: #0A1128;
     color: #F2F4F2;
-    margin: 20px;
+    margin: 1em;
     text-decoration: none;
 }
-
-nav a {
-    padding: 20px 60px 20px 0px;
-}
-
 a {
     text-decoration: none;
     color: inherit;
 }
-
 a:visited {
     color: inherit;
 }
-
+nav > a {
+    text-align: center;
+    display: inline-block;
+    margin: 0.25em;
+    padding: 1em;
+    width: 5em;
+    transition: 0.3s;
+}
+nav a:hover {
+    background-color: #D81159;
+}
 .container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: space-evenly;
     background-color: #6CD4FF;
-    border-radius: 20px;
+    border-radius: 1em;
+    margin: 1em 0em;
+    padding: 1em;
 }
 .item {
     background-color: #218380;
-    margin: 10px;
-    padding: 10px;
-    border-radius: 20px;
+    margin: 0.75em;
+    padding: 0.75em;
+    width: 7em;
+    height: 7em;
+    border-radius: 7em;
+    transition: 0.3s;
 }
 
 .item:hover {
@@ -44,12 +52,12 @@ a:visited {
 
 .show form {
     display: inline;
-    margin: 10px;
+    margin: 1em;
 }
 
 .show input {
-    min-width: 50px;
-    margin: 20px 20px 20px 0px;
+    min-width: 4em;
+    margin: 1.5em 1.5em 1.5em 0em;
 }
 
 #save {

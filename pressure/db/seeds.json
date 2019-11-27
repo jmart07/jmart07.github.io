@@ -21,5 +21,15 @@
     {
         "name": "Celebrate New Years",
         "dueDate": "2020-01-01 0:00:00"
+    },
+    {
+        "name": "today 1",
+        "dueDate": "2019-11-27 11:15",
+        "notes": "this is today"
+    },
+    {
+        "name": "today 2",
+        "dueDate": "2019-11-27 11:30",
+        "notes": "this is also today"
     }
 ]

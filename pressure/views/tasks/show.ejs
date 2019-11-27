@@ -2,6 +2,7 @@
 <%- include("../template/nav.ejs") %>
 
 <body>
+    <h1><%= task.name %></h1>
     <div class="show">
         <p><%= task.dueDate.toLocaleDateString() %></p>
         <p><%= task.notes %></p>

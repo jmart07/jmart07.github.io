@@ -5,7 +5,7 @@
     <div class="container">
         <% tasks.map((task, i) => { %>
             <a href="/tasks/<%= task._id %>">
-                <div class="item" id="<% i %>">
+                <div class="item" id="<%= i %>">
                     <p><%= task.name %></p>                           
                     <p><%= task.dueDate.toLocaleDateString() %></p>
                     <p><%= task.dueDate.toLocaleTimeString() %></p>

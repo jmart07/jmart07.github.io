@@ -1,8 +1,27 @@
 <%- include("template/header.ejs") %>
 <%- include("template/nav.ejs") %>
 
+<%
+    const today = new Date();
+    tasks.map((task, i) => {
+        const days = parseInt((parseInt((task.dueDate - today) / 1000)) / 86400);
+        console.log(`${task.dueDate}, ${days}`);
+    });
+%>
+
 <body>
-    <div>
-        <h3><a href="/tasks">Show All</a></h3>
+    <h1>Welcome!</h1>
+    <h2>Here's what's due today . . .</h2>
+    <div class=container>
+        <% tasks.map((task, i) => { %>
+            <% if(task.dueDate.toDateString() === today.toDateString()) { %>
+                <a href="/tasks/<%= task._id %>">
+                    <div class="item" id="<%= i %>">
+                        <p><%= task.name %></p>                           
+                        <p><%= task.dueDate.toLocaleTimeString() %></p>
+                    </div>
+                </a>
+            <% } %>
+        <% }); %>
     </div>
 </body>
