@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const Tasks = require('../models/Tasks.js')
+const Tasks = require('../models/Tasks.js');
+
 //Index
 router.get('/', (req, res) => {
     console.log('tasks accessed');
@@ -9,7 +10,7 @@ router.get('/', (req, res) => {
         if(err) {
             console.log(err);
         } else {
-            res.render('tasks/Index', {
+            res.render('tasks/index.ejs', {
                 tasks: tasks
             });
         }
@@ -18,14 +19,14 @@ router.get('/', (req, res) => {
 //New
 router.get('/new', (req, res) => {
     console.log('new accessed');
-    res.render('tasks/New');
+    res.render('tasks/new.ejs');
 })
 //Show
 router.get('/:id', (req, res) => {
     console.log(`show accessed. ID: ${req.params.id}`);
     Tasks.findById(req.params.id, (err, task) => {
         err ? console.log(err) : res.render(
-            'tasks/Show', {
+            'tasks/show.ejs', {
                 task: task
             }
         );
@@ -47,7 +48,7 @@ router.get('/edit/:id', (req, res) => {
     console.log(`edit accessed. ID: ${req.params.id}`);
     Tasks.findById(req.params.id, (err, task) => {
         err ? console.log(err) : res.render(
-            'tasks/Edit', {
+            'tasks/edit.ejs', {
                 task: task
             }
         );

@@ -1,0 +1,12 @@
+<%- include("../template/header.ejs") %>
+<%- include("../template/nav.ejs") %>
+
+<body>
+    <form action="/tasks" method="POST">
+        <label>Name</label>
+        <input type="text" name="name"/></br>
+        <label>Due Date</label>
+        <input type="date" name="dueDate"/></br>
+        <input type="submit" name="" value="Create item"/>
+    </form>
+</body>

@@ -6,8 +6,6 @@ const port = 3000;
 
 const app = express();
 
-app.set('view engine', 'jsx');
-app.engine('jsx', require('express-react-views').createEngine());
 app.use(methodOverride('_method'));
 app.use(express.urlencoded({extended: true}));
 app.use(express.static('public'));
@@ -24,7 +22,7 @@ app.get('/', (req, res) => {
         if(err) {
             console.log(err);
         } else {
-            res.render('Index', {
+            res.render('index.ejs', {
                 tasks: tasks
             });
         }

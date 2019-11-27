@@ -1,4 +1,0 @@
-npm init -y
-npm i express express-react-views method-override mongoose react react-dom
-
-npm i @material-ui/core
