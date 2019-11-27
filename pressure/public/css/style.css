@@ -30,7 +30,7 @@ nav a:hover {
 .container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-around;
     background-color: #6CD4FF;
     border-radius: 1em;
     margin: 1em 0em;
@@ -42,19 +42,31 @@ nav a:hover {
     padding: 0.75em;
     width: 5em;
     height: 5em;
-    border-radius: 5em;
+    border-radius: 2em;
     transition: 0.3s;
 }
-
 .item p {
-    /* background-color: red; */
     text-align: center;
 }
-
 .item:hover {
     background-color: #3fc7c2;
 }
+.container-list {
+    display: flex;
+    flex-wrap: wrap;
 
+    background-color: #6CD4FF;
+    border-radius: 1em;
+    margin: 1em 0em;
+    padding: 1em;
+}
+.list {
+    background-color: #218380;
+    margin: 0.75em;
+    padding: 0.75em;
+    transition: 0.3s;
+    border-radius: 5em;
+}
 .show form {
     display: inline;
     margin: 1em;

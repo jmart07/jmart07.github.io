@@ -1,29 +1,64 @@
 <%- include("template/header.ejs") %>
 <%- include("template/nav.ejs") %>
 
-<%
-    const today = new Date();
-    tasks.map((task, i) => {
-        const hours = parseInt((parseInt((task.dueDate - today) / 1000)) / 3600);
-        console.log(`${task.dueDate}, ${hours}`);
-    });
-%>
-
 <body>
-    <h1>Welcome!</h1>
-    <h2>Here's what's due today . . .</h2>
-    <div class=container>
+    <h1>The pressure is on . . .</h1>
+    <div class="container">
+        <% //make div item wrapped in a for each task %>
         <% tasks.map((task, i) => { %>
-            <% if(task.dueDate.toDateString() === today.toDateString()) { %>
-                <a href="/tasks/<%= task._id %>">
-                    <div class="item" id="<%= i %>">
-                        <p>
-                            <%= task.name %>                         
-                            <%= task.dueDate.toLocaleTimeString() %>
-                        </p>
-                    </div>
-                </a>
-            <% } %>
+            <%
+                //variables to apply to styling
+                let alert = false;
+                let urgency = 6;
+                let text = 1;
+
+                //calculating urgency based on hours left until due date
+                const today = new Date();
+                const hours = parseInt((parseInt((task.dueDate - today) / 1000)) / 3600);
+
+                //formatting item div based on hours left until due
+                if(hours < 0) {
+                    alert = true;
+                    urgency = 10;
+                    text = 1.5;
+                } else if(hours < 24) {
+                    urgency = 10 - hours;
+                }
+                
+                //format name string to fit nicely in div
+                let nameStr = task.name;
+                const nameArr = task.name.split(' ');
+                if(nameArr.length > 2) {
+                    nameArr.splice(2, nameArr.length - 1);
+                    nameStr = `${nameArr.join(' ')}...`;
+                }
+
+                //format time to fit nicely in div
+                let timeStr = task.dueDate.toLocaleTimeString();
+                const amPm = timeStr.substr(timeStr.length - 2, 2);
+                if(timeStr.length === 11) {
+                    timeStr = `${timeStr.substr(0, 5)} ${amPm}`;
+                } else {
+                    timeStr = `${timeStr.substr(0, 4)} ${amPm}`;
+                }
+            %>
+            <a href="/tasks/<%= task._id %>">
+                <div class="item" id="<%= i %>">
+                    <p>
+                        <% if(alert) { %>
+                            OVERDUE!</br></br>
+                        <% } %>
+                        <%= nameStr %><br/>                       
+                        <%= task.dueDate.toLocaleDateString() %></br>
+                        <%= timeStr %>
+                    </p>
+                </div>
+            </a>
+        <script>
+            document.getElementById('<%= i %>').style.width = '<%= urgency %>em';
+            document.getElementById('<%= i %>').style.height = '<%= urgency %>em';
+            document.getElementById('<%= i %>').style.fontSize = '<%= text %>em';
+        </script>
         <% }); %>
     </div>
 </body>

@@ -13,7 +13,7 @@ app.use(express.static('public'));
 const Tasks = require('./models/Tasks.js');
 const tasksController = require('./controllers/tasks.js');
 
-//index route, will only show tasks past due or due today
+//index route, "pressure"
 app.get('/', (req, res) => {
     console.log('index accessed');
     Tasks.find((err, tasks) => {

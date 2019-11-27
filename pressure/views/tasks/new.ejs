@@ -1,13 +1,18 @@
 <%- include("../template/header.ejs") %>
 <%- include("../template/nav.ejs") %>
 
+<%
+    const today = new Date();
+    const todayStr = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+%>
+
 <body>
     <div class="container">
         <form action="/tasks" method="POST">
             <label>Name</label>
             <input type="text" name="name"/></br>
             <label>Due Date</label>
-            <input type="date" name="dueDate"/></br>
+            <input type="datetime-local" name="dueDate" value="<%= todayStr %>"/></br>
             <label>Notes</label>
             <input type="text" name="notes"/>
             <input type="submit" name="" value="Create item"/>
