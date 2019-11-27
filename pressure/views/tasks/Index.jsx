@@ -1,7 +1,5 @@
 const React = require('react');
-const AppLayout = require('../layout/AppLayout.jsx')
-
-
+const AppLayout = require('../layout/AppLayout.jsx');
 
 class Index extends React.Component {
     constructor(props) {
