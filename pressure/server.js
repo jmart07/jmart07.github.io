@@ -11,9 +11,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.static('public'));
 
 const Tasks = require('./models/Tasks.js');
-
 const tasksController = require('./controllers/tasks.js');
-
 
 //index route, will only show tasks past due or due today
 app.get('/', (req, res) => {
@@ -22,11 +20,12 @@ app.get('/', (req, res) => {
         if(err) {
             console.log(err);
         } else {
+            console.log(tasks);
             res.render('index.ejs', {
                 tasks: tasks
             });
         }
-    });
+    }).sort('dueDate');
 });
 
 app.use('/tasks', tasksController);

@@ -17,6 +17,8 @@ const taskSchema = new mongoose.Schema({
         require: true,
         default: ''
     },
+    hoursLeft: {type: Number, require: true, default: 1000},
+    urgency: {type: Number, require: true, default: 5},
     archived: {type: Boolean, require: true, default: false}
 },
 {

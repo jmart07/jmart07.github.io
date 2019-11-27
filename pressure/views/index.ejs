@@ -4,8 +4,8 @@
 <%
     const today = new Date();
     tasks.map((task, i) => {
-        const days = parseInt((parseInt((task.dueDate - today) / 1000)) / 86400);
-        console.log(`${task.dueDate}, ${days}`);
+        const hours = parseInt((parseInt((task.dueDate - today) / 1000)) / 3600);
+        console.log(`${task.dueDate}, ${hours}`);
     });
 %>
 
@@ -17,8 +17,10 @@
             <% if(task.dueDate.toDateString() === today.toDateString()) { %>
                 <a href="/tasks/<%= task._id %>">
                     <div class="item" id="<%= i %>">
-                        <p><%= task.name %></p>                           
-                        <p><%= task.dueDate.toLocaleTimeString() %></p>
+                        <p>
+                            <%= task.name %>                         
+                            <%= task.dueDate.toLocaleTimeString() %>
+                        </p>
                     </div>
                 </a>
             <% } %>

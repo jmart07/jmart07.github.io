@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
                 tasks: tasks
             });
         }
-    });
+    }).sort('dueDate');
 });
 //New
 router.get('/new', (req, res) => {
